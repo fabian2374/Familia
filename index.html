@@ -266,11 +266,21 @@ function renderRank(){
     html+=`</div>`;
   }
   html+='<ul class="rank">';
-  t.forEach((x,idx)=>{
-    const medal=has?(idx===0?"🥇":idx===1?"🥈":idx===2?"🥉":(idx+1)):"•";
-    html+=`<li class="${has&&idx===0&&x.pts===top&&top>0?"first":""}">
-      <div class="pos">${medal}</div><div class="nm">${x.name}</div>
-      <div class="pts">${x.pts}<small> pts</small></div></li>`;
+  // Agrupa por puntaje: los empatados comparten una sola fila/medalla.
+  const groups=[];
+  t.forEach(x=>{
+    const g=groups.find(gr=>gr.pts===x.pts);
+    if(g) g.names.push(x.name);
+    else groups.push({pts:x.pts, names:[x.name]});
+  });
+  groups.forEach(g=>{
+    const rank=t.filter(y=>y.pts>g.pts).length+1; // posición del grupo
+    const medal=has?(rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":rank):"•";
+    const names=g.names.join(" · ");
+    const isFirst=has&&rank===1&&g.pts===top&&top>0;
+    html+=`<li class="${isFirst?"first":""}">
+      <div class="pos">${medal}</div><div class="nm">${names}</div>
+      <div class="pts">${g.pts}<small> pts</small></div></li>`;
   });
   html+="</ul>";
   area.innerHTML=html;
