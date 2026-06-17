@@ -223,7 +223,7 @@ function totalFor(name){
 }
 function tally(){
   return state.people.map(p=>{const t=totalFor(p);return {name:p,pts:t.pts,exact:t.exact};})
-    .sort((a,b)=>b.pts-a.pts||b.exact-a.exact);
+    .sort((a,b)=>b.pts-a.pts||a.name.localeCompare(b.name,"es",{sensitivity:"base"}));
 }
 function anyReal(){ return state.matches.some(m=>m.real&&m.real.h!=null&&m.real.a!=null); }
 
