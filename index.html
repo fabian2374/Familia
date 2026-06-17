@@ -244,9 +244,8 @@ function buildPrizeRows(){
   const t=tally(), has=anyReal();
   let html=`<div class="pot-line">🏦 Pozo total: <b style="color:var(--gold)">${formatCOP(state.pot)}</b></div>`;
   for(let i=0;i<3;i++){
-    const who=(has && t[i] && t[i].pts>0) ? t[i].name : "Por definir";
     html+=`<div class="prize-row${i===0?" first":""}"><span class="m">${medals[i]}</span>`+
-      `<div style="flex:1;"><div class="lbl">${labels[i]}</div><div class="who">${who}</div></div>`+
+      `<div style="flex:1;"><div class="lbl">${labels[i]}</div></div>`+
       `<span class="amt">${formatCOP(amt[i])}</span></div>`;
   }
   return html;
