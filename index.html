@@ -301,7 +301,8 @@ function renderSummary(){
   });
   head+=`<th class="total">Total</th></tr>`;
   let body="";
-  state.people.forEach(p=>{
+  t.forEach(row=>{
+    const p=row.name;
     const tot=totalFor(p);
     const lead=top>0&&tot.pts===top?" lead":"";
     body+=`<tr class="${lead.trim()}"><td class="name">${p}</td>`;
