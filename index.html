@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Polla Futbolera — Familia (Visor)</title>
+<title>POLLA FUTBOLERA - FAMILIA RODRIGEZ</title>
 <style>
   :root{--pitch:#0b2a6b;--pitch-dark:#071c4d;--chalk:#f7f5ec;--gold:#FCD116;
     --azul:#003893;--rojo:#CE1126;
@@ -49,6 +49,10 @@
   .btn-ghost{background:transparent;color:var(--chalk);border:1px solid var(--line);}
   .btn-sm{padding:7px 12px;font-size:12px;}
   .note{font-size:12px;opacity:.7;margin-top:10px;line-height:1.5;}
+
+  /* Fuegos pirotécnicos */
+  #fxCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+  .wrap{position:relative;z-index:1;}
 
   .refresh-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px;}
   .refresh-bar .stat{font-size:12px;opacity:.85;}
@@ -102,9 +106,53 @@
 </style>
 </head>
 <body>
+<canvas id="fxCanvas"></canvas>
+<script>
+(function(){
+  const cv=document.getElementById('fxCanvas'),cx=cv.getContext('2d');
+  let W,H;function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;}rs();addEventListener('resize',rs);
+  const COLORS=['#FCD116','#CE1126','#4a7dff','#ffffff','#37d67a','#ff9e3d'];
+  const rockets=[],parts=[];
+  function launch(){
+    rockets.push({x:W*(0.1+Math.random()*0.8),y:H+10,vy:-(H*0.009+Math.random()*H*0.004),
+      ty:H*(0.12+Math.random()*0.3),c:COLORS[Math.floor(Math.random()*COLORS.length)]});
+  }
+  function explode(x,y,c){
+    const n=90+Math.random()*60|0;
+    for(let i=0;i<n;i++){
+      const a=Math.PI*2*i/n+Math.random()*0.2,s=2.5+Math.random()*6;
+      parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,c:Math.random()<0.7?c:COLORS[Math.floor(Math.random()*COLORS.length)]});
+    }
+  }
+  let last=0;
+  function tick(t){
+    requestAnimationFrame(tick);
+    if(t-last>700+Math.random()*700){last=t;launch();if(Math.random()<0.6)launch();if(Math.random()<0.3)launch();}
+    cx.clearRect(0,0,W,H);
+    for(let i=rockets.length-1;i>=0;i--){
+      const r=rockets[i];r.y+=r.vy;r.vy+=0.03;
+      cx.globalAlpha=1;cx.fillStyle=r.c;
+      cx.shadowBlur=12;cx.shadowColor=r.c;
+      cx.beginPath();cx.arc(r.x,r.y,3.2,0,7);cx.fill();
+      cx.shadowBlur=0;
+      cx.globalAlpha=0.45;cx.fillRect(r.x-1,r.y,2,18);
+      if(r.y<=r.ty||r.vy>=0){explode(r.x,r.y,r.c);rockets.splice(i,1);}
+    }
+    for(let i=parts.length-1;i>=0;i--){
+      const p=parts[i];p.x+=p.vx;p.y+=p.vy;p.vy+=0.05;p.vx*=0.985;p.life-=0.009;
+      if(p.life<=0){parts.splice(i,1);continue;}
+      cx.globalAlpha=Math.min(1,Math.max(p.life,0)*1.3);cx.fillStyle=p.c;
+      cx.shadowBlur=10;cx.shadowColor=p.c;
+      cx.beginPath();cx.arc(p.x,p.y,2.5+p.life*2.5,0,7);cx.fill();
+    }
+    cx.shadowBlur=0;cx.globalAlpha=1;
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
 <div class="wrap">
   <header>
-    <div class="eyebrow">🇨🇴 Familia · Polla Futbolera 🇨🇴</div>
+    <div class="eyebrow">🇨🇴 POLLA FUTBOLERA - FAMILIA RODRIGEZ 🇨🇴</div>
     <h1>Mundial 2026</h1>
     <div class="sub">Marcadores, predicciones y ranking en vivo</div>
   </header>
@@ -132,20 +180,6 @@
     <h2>Premios</h2>
     <div class="prize-display" id="prizeDisplay"></div>
     <div id="prizeBreak"></div>
-  </div>
-
-  <div class="box">
-    <h2>¿Cómo se ganan los puntos?</h2>
-    <table class="points-tbl">
-      <thead><tr><th>Criterio</th><th>Puntos</th></tr></thead>
-      <tbody>
-        <tr><td>🎯 Marcador exacto (excluyente)</td><td class="p">8</td></tr>
-        <tr><td>✅ Acertar quién gana (o el empate)</td><td class="p">3</td></tr>
-        <tr><td>⚽ Bonus: acertar un gol del marcador (se suma)</td><td class="p">+1</td></tr>
-        <tr><td>⬜ Fallar</td><td class="p">0</td></tr>
-      </tbody>
-    </table>
-    <div class="note">El marcador exacto (8 pts) es excluyente: no se suma con nada más. La victoria (3) y el bonus de gol (+1) sí se acumulan entre sí. El bonus también aplica solo, aunque falles al ganador. Ej.: predices 2-1 y queda 2-1 → 8 pts; predices 2-0 y queda 3-1 → 3 pts (mismo ganador); predices 2-1 y queda 2-0 → 4 pts (ganador 3 + un gol 1); predices 2-0 y queda 0-0 → 1 pt (acertaste un cero).</div>
   </div>
 
   <div class="box">
