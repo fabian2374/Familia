@@ -25,10 +25,15 @@
   header::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);
     width:180px;height:5px;border-radius:3px;
     background:linear-gradient(90deg,var(--gold) 0 50%,var(--azul) 50% 75%,var(--rojo) 75% 100%);}
-  .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#ffffff;font-weight:700;}
   h1{font-size:clamp(24px,7vw,34px);font-weight:800;letter-spacing:-1px;margin:4px 0;}
-  h1.fam{font-size:clamp(30px,9vw,46px);font-weight:900;color:var(--gold);
-    text-shadow:0 0 18px rgba(252,209,22,.55),0 2px 4px rgba(0,0,0,.6);}
+  h1.fam{font-size:clamp(30px,9vw,46px);font-weight:900;
+    animation:famColors 60s ease-in-out infinite;}
+  @keyframes famColors{
+    0%,30%,100%{color:var(--gold);text-shadow:0 0 18px rgba(252,209,22,.6),0 2px 4px rgba(0,0,0,.6);}
+    33%,63%{color:#4a7dff;text-shadow:0 0 18px rgba(74,125,255,.65),0 2px 4px rgba(0,0,0,.6);}
+    66%,96%{color:#ff4b5c;text-shadow:0 0 18px rgba(255,75,92,.65),0 2px 4px rgba(0,0,0,.6);}
+  }
   .sub{font-size:13px;opacity:.75;}
   .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px;backdrop-filter:blur(3px);}
   .box h2{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
