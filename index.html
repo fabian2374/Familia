@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Polla Futbolera — DGI (Visor)</title>
+<title>Polla Futbolera — Familia (Visor)</title>
 <style>
   :root{--pitch:#0a5c36;--pitch-dark:#073f25;--chalk:#f5f3e8;--gold:#e8b923;
     --line:rgba(245,243,232,0.16);--card:#0d6b3f;--green-ok:#37d67a;--amber-ok:#ffb547;}
@@ -90,7 +90,7 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow">DGI · Polla Futbolera</div>
+    <div class="eyebrow">Familia · Polla Futbolera</div>
     <h1>Mundial 2026</h1>
     <div class="sub">Marcadores, predicciones y ranking en vivo</div>
   </header>
@@ -230,10 +230,10 @@ async function applyLiveScores(){
    CONFIGURACIÓN — usa las casillas (⚙️) o abre un enlace con la conexión.
    ======================================================================== */
 // Conexión incrustada (solo lectura) — para repartir por OneDrive.
-const DEFAULT_URL = "https://polla-datos.fabian2374.workers.dev";
+const DEFAULT_URL = "https://polla-datos.fabian2374.workers.dev/familia";
 
 const CLOUD = { URL:"" };
-const CLOUD_KEY = "polla-dgi-visor-cloud-cf";
+const CLOUD_KEY = "polla-familia-visor-cloud-cf";
 const REFRESH_MS = 30000; // auto-actualiza cada 30 s
 function cloudReady(){ return !!CLOUD.URL; }
 function loadCloudConfig(){
